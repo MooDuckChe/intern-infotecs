@@ -5,11 +5,19 @@
 Journal::Journal(std::string filename, std::string priority)
 {
     if (filename.length() > 255)
+    {
         throw std::invalid_argument("Имя файла с расширением не может превышать 255 символов!");
+    }
     if (filename.empty() || filename == ".txt")
+    {
         throw std::invalid_argument("Имя файла не может быть пустым!");
+    }
     if (!SetPriority(priority))
+    {
         throw std::invalid_argument("Ошибка в формате важности! Допустимые значения: {High, Medium, Low}.");
+    }
+    std::system("mkdir Journals");
+    
     this->FileName = filename;
 }
 
@@ -19,8 +27,10 @@ std::mutex dll_mx;
 void Journal::Write(std::string FileName, std::string priority, std::string time, std::string message)
 {
     if (Check_Priority(priority))
+    {
         return;
-
+    }
+    
     {
         std::lock_guard<std::mutex> lock(dll_mx);
 
@@ -47,6 +57,7 @@ std::string Journal::GetTime()
     char future_str[23];
     strftime(future_str, sizeof(future_str), "[%d.%m.%Y-%H.%M.%S", ptm_future);
     strcat(future_str, "]");
+    
     return future_str;
 }
 
@@ -69,7 +80,10 @@ bool Journal::SetPriority(std::string priority)
         return true;
     }
     else
+    {
         return false;
+    }
+    
     return false;
 }
 
@@ -91,7 +105,10 @@ bool Journal::Check_Priority(std::string priority)
             return false;
     }
     else
+    {
         return true;
+    }
+    
     return false;
 }
 
@@ -117,6 +134,7 @@ bool Journal::SetFileName(std::string filename)
         this->FileName = filename;
         return true;
     }
+    
     return false;
 }
 

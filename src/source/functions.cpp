@@ -1,21 +1,26 @@
 #include "../include/functions.h"
 
+#define File_Exstension ".txt"
 // Выводит все файлы типа .txt в директории
 std::vector<std::string> Func::OutExistFiles(const std::string& directory)
 {
-    try {
+    try
+    {
         std::vector<std::string> files;
         for (const auto& entry : std::filesystem::directory_iterator(directory))
         {
-            if (entry.is_regular_file() && entry.path().extension() == ".txt")
+            if (entry.is_regular_file() && entry.path().extension() == File_Exstension)
             {
                 files.push_back(entry.path().filename().string());
             }
         }
         std::sort(files.begin(), files.end());
+        
         return files;
     }
-    catch (const std::filesystem::filesystem_error& e) {
+    catch (const std::filesystem::filesystem_error& e)
+    {
+        std::system("mkdir Journals");
         std::cerr << "Filesystem error: " << e.what() << std::endl;
     }
     return {};
@@ -31,6 +36,7 @@ int Func::Returnint()
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             return input;
         }
+        
         else
         {
             std::cin.clear();
@@ -51,6 +57,7 @@ bool Func::Filename_Exist(std::string path_to_filename)
         std::cout << "2) Добавить данные в конец файла\n";
         std::cout << "3) Создать с другим именем\n";
         std::cout << "Введите номер(1-3): ";
+        
         switch (Func::Returnint())
         {
         case 1:
@@ -63,6 +70,7 @@ bool Func::Filename_Exist(std::string path_to_filename)
                 std::cerr << "Ошибка. Не удалось открыть файл!\n";
                 return false;
             }
+            
             else
             {
                 std::cout << "Успешно перезаписан\n";
@@ -103,9 +111,12 @@ std::string Func::ChooseJournal()
                 std::cout << "Введите имя журнала: ";
                 std::string filename = "";
                 std::getline(std::cin, filename);
+                
                 if (filename == "")
+                {
                     continue;
-
+                }
+                
                 filename = "./Journals/" + filename + ".txt";
 
                 if (filename.length() <= 255)
@@ -114,10 +125,16 @@ std::string Func::ChooseJournal()
                     if (file)
                     {
                         if (Filename_Exist(filename))
+                        {
                             return filename;
+                        }
+                        
                         else
+                        {
                             continue;
+                        }
                     }
+                    
                     else
                     {
                         std::ofstream file(filename, std::ios::out);
@@ -129,16 +146,22 @@ std::string Func::ChooseJournal()
                             return filename;
                             break;
                         }
-                        else {
+                        
+                        else 
+                        {
                             std::cerr << "Не удалось открыть файл!\n";
                         }
                     }
                 }
                 else
+                {
                     std::cerr << "Название файла не должно превышать 251 символ!\n";
+                }
             } while (true);
+            
             break;
         }
+        
         case 1:
         {
             std::system("clear");
@@ -156,16 +179,25 @@ std::string Func::ChooseJournal()
                 std::cout << "[" << i + 1 << "] " << filess[i] << std::endl;;
             }
             int userInput = Func::Returnint() - 1;
+            
             if (userInput < 0)
+            {
                 break;
+            }
+            
             std::cout << filess[userInput] << std::endl;
+            
             return filess[userInput];
+            
             break;
         }
         default:
+        {
             return "";
         }
+        }
     } while (true);
+    
     return "fail";
 }
 
@@ -183,8 +215,10 @@ std::string Func::GetPriority(bool allow_empty)
             return "";
         }
         else if (text.empty())
+        {
             continue;
-
+        }
+        
         switch (text[0])
         {
         case 72:
@@ -208,8 +242,5 @@ std::string Func::GetPriority(bool allow_empty)
             continue;
         }
         }
-    } while (true);
-    
+    } while (true);   
 }
-
-//void Write_Func()

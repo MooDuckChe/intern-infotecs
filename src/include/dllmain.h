@@ -4,13 +4,14 @@
 #ifdef __cplusplus
 
 #include <iostream>
-#include <string>
 #include <fstream>
-#include <mutex>
-#include <chrono>
+#include <cstdlib> 
 #include <cstring>
-#include <ctime>
+#include <string>
+#include <chrono>
 #include <thread>
+#include <mutex>
+#include <ctime>
 #include <queue>
 
 class Journal
@@ -19,7 +20,6 @@ private:
     std::string PathFile = "./Journals/";
     std::string FileName = "";
     std::string PriorityLevel = "Low";
-    int LineWrite = 0;
 public:
     Journal(std::string filename, std::string priority);
     // Записывает сообщение в журнал с важностью и временем 
@@ -36,7 +36,9 @@ public:
     std::string GetPriority();
     // Устанавливает имя файла
     bool SetFileName(std::string filename);
+    // Возвращает текущий журнал для редактирования
     std::string GetFileName();
+    // Возвращает путь до папки с журналами
     std::string GetPathToFile();
 };
 #endif

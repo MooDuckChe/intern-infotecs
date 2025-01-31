@@ -9,3 +9,8 @@ cd intern-infotecs
 make
 ./infotecs
 ```
+
+```sh
+make all_clean # Удаляет все собранные файлы
+make clean # Удаляет все промежуточный файлы
+```
