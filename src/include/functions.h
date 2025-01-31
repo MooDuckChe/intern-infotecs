@@ -12,7 +12,7 @@ public:
     static int Returnint();
 
     // Âûâîäèò ìåíþ åñëè ôàéë ñ óêàçàííûì èìåíåì óæå ñóùåñòâóåò
-    static bool Filename_Exist(std::string filename);
+    static bool Filename_Exist(std::string filename, bool exist = true);
 
     // Âûâîäèò ìåíþ âûáîðà æóðíàëà äëÿ ðåäàêòèðîâàíèÿ
     static std::string ChooseJournal();

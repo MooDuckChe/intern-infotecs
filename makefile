@@ -2,8 +2,10 @@ CC = gcc
 CFLAGS = -std=c++17 -lstdc++
 
 # Цель по умолчанию
-all: infotecs
+all: folder infotecs
 
+folder: 
+	mkdir -p ./Journals
 # Цель для создания исполняемого файла
 infotecs: dll.so main.o functions.o
 	$(CC) -o infotecs main.o functions.o dll.so -Wl,-rpath,. $(CFLAGS) 

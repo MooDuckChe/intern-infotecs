@@ -17,7 +17,7 @@
 class Journal
 {
 private:
-    std::string PathFile = "./Journals/";
+    std::string PathFile = "Journals/";
     std::string FileName = "";
     std::string PriorityLevel = "Low";
 public:

@@ -47,17 +47,16 @@ int Func::Returnint()
 }
 
 // Выводит меню если файл с указанным именем уже существует
-bool Func::Filename_Exist(std::string path_to_filename)
+bool Func::Filename_Exist(std::string path_to_filename, bool exist)
 {
     do
     {
         std::system("clear");
-        std::cout << "\nФайл с таким именем уже существует!\n";
+        if (exist) std::cout << "\nФайл с таким именем уже существует!\n";
         std::cout << "1) Перезаписать файл\n";
         std::cout << "2) Добавить данные в конец файла\n";
         std::cout << "3) Создать с другим именем\n";
         std::cout << "Введите номер(1-3): ";
-        
         switch (Func::Returnint())
         {
         case 1:
@@ -97,6 +96,7 @@ bool Func::Filename_Exist(std::string path_to_filename)
 // Выводит меню выбора журнала для редактирования
 std::string Func::ChooseJournal()
 {
+
     do
     {
         std::system("clear");
@@ -117,14 +117,15 @@ std::string Func::ChooseJournal()
                     continue;
                 }
                 
-                filename = "./Journals/" + filename + ".txt";
+                std::string filename_path = "./Journals/" + filename + ".txt";
+                filename += ".txt";
 
                 if (filename.length() <= 255)
                 {
-                    std::ofstream file(filename, std::ios::in);
+                    std::ofstream file(filename_path, std::ios::in);
                     if (file)
                     {
-                        if (Filename_Exist(filename))
+                        if (Filename_Exist(filename_path))
                         {
                             return filename;
                         }
@@ -134,23 +135,18 @@ std::string Func::ChooseJournal()
                             continue;
                         }
                     }
-                    
                     else
                     {
-                        std::ofstream file(filename, std::ios::out);
-                        file.open(filename);
-                        if (file.is_open())
+                        std::ofstream file(filename_path, std::ios::out);
+                        file.close();
+                        if (file.fail())
                         {
-                            std::cout << "Файл успешно создан!\n";
-                            file.close();
-                            return filename;
-                            break;
+                            std::cerr << "Ошбика! Не удалось создать файл с таким именем.\n";
+                            std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+                            continue;
                         }
-                        
-                        else 
-                        {
-                            std::cerr << "Не удалось открыть файл!\n";
-                        }
+                        std::cout << "Файл успешно создан!\n";
+                        return filename;
                     }
                 }
                 else
@@ -173,19 +169,27 @@ std::string Func::ChooseJournal()
                 std::cout << "Созданных ранее журналов нет!\n";
                 break;
             }
-            
+            std::cout << "do\n";
             for (int i = 0; i < (filess.size() > 20 ? 20 : filess.size()); i++)
             {
                 std::cout << "[" << i + 1 << "] " << filess[i] << std::endl;;
             }
             int userInput = Func::Returnint() - 1;
             
-            if (userInput < 0)
+            
+            if (userInput <= -1)
             {
                 break;
             }
             
-            std::cout << filess[userInput] << std::endl;
+            if (Filename_Exist(("./Journals/" + filess[userInput]),false))
+            {
+                return filess[userInput];
+            }
+            else 
+            {
+                continue;
+            }
             
             return filess[userInput];
             

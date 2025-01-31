@@ -16,8 +16,6 @@ Journal::Journal(std::string filename, std::string priority)
     {
         throw std::invalid_argument("Ошибка в формате важности! Допустимые значения: {High, Medium, Low}.");
     }
-    std::system("mkdir Journals");
-    
     this->FileName = filename;
 }
 
@@ -26,16 +24,13 @@ std::mutex dll_mx;
 // [priority] [dd.mm.yyyy | hh.mm.ss] - msg
 void Journal::Write(std::string FileName, std::string priority, std::string time, std::string message)
 {
-    if (Check_Priority(priority))
+    if (!Check_Priority(priority))
     {
         return;
     }
-    
     {
         std::lock_guard<std::mutex> lock(dll_mx);
-
         std::ofstream file(FileName, std::ios::app);
-
         if (file.is_open())
         {
             file << priority << ' ' << time << " - " << message << std::endl;
@@ -60,7 +55,6 @@ std::string Journal::GetTime()
     
     return future_str;
 }
-
 // Проверяет корректность формата важности для сообщений
 bool Journal::SetPriority(std::string priority)
 {
@@ -88,28 +82,29 @@ bool Journal::SetPriority(std::string priority)
 }
 
 // Возвращает true если приоритет выше или равен
-bool Journal::Check_Priority(std::string priority)
+bool Journal::Check_Priority(std::string input)
 {
-    if (priority == "High")
+    if (input.empty())
+        return false;
+    if (this->PriorityLevel == "High" && "High" != input)
     {
         return false;
     }
-    else if (priority == "Medium")
+    else if(this->PriorityLevel == "Medium")
     {
-        if (this->PriorityLevel == "High")
+        if(input == "Medium" || input == "High")
+        {
+            return true;
+        }
+        else
+        {
             return false;
-    }
-    else if (priority == "Low")
-    {
-        if (this->PriorityLevel == "Medium" || this->PriorityLevel == "High")
-            return false;
+        }
     }
     else
     {
         return true;
-    }
-    
-    return false;
+    }   
 }
 
 // Возвращает приоритет в отформатированном виде
