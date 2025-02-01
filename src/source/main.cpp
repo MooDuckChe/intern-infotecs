@@ -181,45 +181,6 @@ int main()
             } while (true);
             continue;
       }
-      case 4:
-      {
-      std::cout << journal.GetPathToFile() << journal.GetFileName() << std::endl;
-      std::this_thread::sleep_for(std::chrono::seconds(2));
-      break;
-      }
-      case 5:
-      {
-      std::string fi;
-      std::cin >> fi;
-      journal.Write(fi, "High", "time", "input");
-      std::this_thread::sleep_for(std::chrono::seconds(2));
-      break;
-      }
-      case 6:
-      {
-      std::system("touch cat.txt");
-      std::this_thread::sleep_for(std::chrono::seconds(2));
-      break;
-      }
-      case 7:
-      {
-      std::string fi;
-      std::cin >> fi;
-      journal.SetFileName(fi);
-      break;
-      }
-      
-      case 8:
-      {
-      for(int i = 0; i < 3 ; i++)
-      {
-          std::string g = Func::GetPriority(false);
-          
-          journal.Write("./Journals/asd.txt", g, "time", "ConsoleInput");
-          std::cout << std::endl;
-      }
-      break;
-      }
       case 0:
       {
           stop = true;
