@@ -86,7 +86,6 @@ void threadWriteToFile()
         {
             break;
         }
-        std::cout << "write" << std::endl;
         std::vector<std::string> data = sorted_write_task.front();
         journal.Write(data[0], data[1], data[2], data[3]);
         sorted_write_task.pop();
@@ -169,8 +168,6 @@ int main()
                 {
                     break;
                 }
-                std::cout << "112\n";
-                
                 std::string time = Journal::GetTime();
                 {
                     std::lock_guard<std::mutex> lock(mtt);

@@ -169,7 +169,6 @@ std::string Func::ChooseJournal()
                 std::cout << "Созданных ранее журналов нет!\n";
                 break;
             }
-            std::cout << "do\n";
             for (int i = 0; i < (filess.size() > 20 ? 20 : filess.size()); i++)
             {
                 std::cout << "[" << i + 1 << "] " << filess[i] << std::endl;;
